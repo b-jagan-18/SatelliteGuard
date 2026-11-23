@@ -22,8 +22,11 @@ pip install -e .
 python -m satelliteguard.data.download   # fetch + checksum-verify Zenodo files
 python -m satelliteguard.data.validate   # data-contract audit (red gate)
 python -m satelliteguard.data.episodes   # segment index + contiguous episodes
-python -m satelliteguard.models.tune     # bounded hyperparameter grid
+python -m satelliteguard.models.tune logreg   # bounded hyperparameter grids
+python -m satelliteguard.models.tune hgb
 python -m satelliteguard.models.train    # grouped CV, thresholds, final models
+python -m satelliteguard.evaluation.compare hgb logreg
+python -m satelliteguard.models.explain  # held-out SHAP
 python -m satelliteguard.evaluation.plots
 pytest -q
 ```
@@ -59,10 +62,15 @@ episode-grouped CV for all model selection. Details: [notebooks/01_eda.ipynb](no
 |---|---|---|
 | Prevalence (reference) | 0.201 ± 0.002 | – |
 | Channel only (reference) | 0.250 ± 0.050 | – |
-| Logistic regression | **0.878 ± 0.078** | 0.83 / 0.82 |
+| Logistic regression (interpretable baseline) | 0.878 ± 0.078 | 0.83 / 0.82 |
+| **Gradient boosting (primary)** | **0.919 ± 0.060** | 0.82 / 0.83 |
+
+Boosting wins 11/15 paired folds, but the Nadeau–Bengio corrected t-test gives p = 0.30, so the
+difference is not statistically significant. SHAP shows the model relies on peak counts and
+second-difference variance (spikes and dropouts), not channel identity.
 
 The frozen test split has not been scored yet; it is used once, after model selection.
-Details: [notebooks/02_baselines.ipynb](notebooks/02_baselines.ipynb).
+Details: [02_baselines](notebooks/02_baselines.ipynb), [03_gradient_boosting](notebooks/03_gradient_boosting.ipynb).
 
 ## Approach
 

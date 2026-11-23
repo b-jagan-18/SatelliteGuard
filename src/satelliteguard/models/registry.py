@@ -12,6 +12,7 @@ from dataclasses import dataclass, field
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
@@ -70,6 +71,21 @@ def logreg(C: float = 1.0, scaling: str = "quantile", class_weight=None):
     return factory
 
 
+def hgb(max_leaf_nodes: int = 15, learning_rate: float = 0.05, max_iter: int = 300,
+        class_weight=None):
+    """Histogram gradient boosting. Fixed iteration count: sklearn's early stopping uses a random
+    internal validation split, which would leak neighbouring segments."""
+    def factory(numeric, seed):
+        return Pipeline([
+            ("pre", make_preprocessor(numeric, scaling="none")),
+            ("clf", HistGradientBoostingClassifier(
+                max_leaf_nodes=max_leaf_nodes, learning_rate=learning_rate, max_iter=max_iter,
+                min_samples_leaf=20, l2_regularization=1.0, early_stopping=False,
+                class_weight=class_weight, random_state=seed)),
+        ])
+    return factory
+
+
 MODELS: dict[str, ModelSpec] = {
     "prevalence": ModelSpec(
         "prevalence", lambda n, s: PrevalenceBaseline(),
@@ -83,6 +99,13 @@ MODELS: dict[str, ModelSpec] = {
         "L2 logistic regression, quantile-normal scaling + one-hot channel, unweighted "
         "(log-loss fit keeps probabilities calibrated)", "supervised",
         params={"C": 1.0, "scaling": "quantile", "class_weight": None}),
+    # Selected by one-SE rule over reports/tuning/hgb_grid.csv.
+    "hgb": ModelSpec(
+        "hgb", hgb(max_leaf_nodes=4, learning_rate=0.03),
+        "Histogram gradient boosting, 4 leaves/tree, lr 0.03, 300 trees, unweighted, raw "
+        "features + one-hot channel", "supervised",
+        params={"max_leaf_nodes": 4, "learning_rate": 0.03, "max_iter": 300,
+                "min_samples_leaf": 20, "l2_regularization": 1.0}),
     "logreg_balanced": ModelSpec(
         "logreg_balanced", logreg(C=1.0, scaling="quantile", class_weight="balanced"),
         "As logreg but class_weight='balanced' (calibration comparison)", "supervised",

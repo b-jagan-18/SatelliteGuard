@@ -1,0 +1,28 @@
+{
+  "hgb_vs_logreg_pr_auc": {
+    "a": "hgb",
+    "b": "logreg",
+    "metric": "pr_auc",
+    "mean_diff": 0.0402,
+    "sd_diff": 0.0661,
+    "folds_a_better": 11,
+    "n_folds": 15,
+    "t_naive": 2.356,
+    "p_naive": 0.0336,
+    "t_corrected": 1.081,
+    "p_corrected": 0.298
+  },
+  "hgb_vs_logreg_roc_auc": {
+    "a": "hgb",
+    "b": "logreg",
+    "metric": "roc_auc",
+    "mean_diff": 0.0159,
+    "sd_diff": 0.0342,
+    "folds_a_better": 10,
+    "n_folds": 15,
+    "t_naive": 1.797,
+    "p_naive": 0.0939,
+    "t_corrected": 0.825,
+    "p_corrected": 0.4234
+  }
+}

@@ -35,7 +35,7 @@
         "balanced_accuracy": 0.5056,
         "alerts": 1555
       },
-      "trained_utc": "2026-11-23T14:09:05+00:00"
+      "trained_utc": "2026-11-23T14:17:10+00:00"
     },
     "channel_only": {
       "description": "Training anomaly rate of the segment's channel",
@@ -72,7 +72,7 @@
         "balanced_accuracy": 0.5479,
         "alerts": 1472
       },
-      "trained_utc": "2026-11-23T14:09:06+00:00"
+      "trained_utc": "2026-11-23T14:17:10+00:00"
     },
     "logreg": {
       "description": "L2 logistic regression, quantile-normal scaling + one-hot channel, unweighted (log-loss fit keeps probabilities calibrated)",
@@ -113,7 +113,7 @@
         "balanced_accuracy": 0.8881,
         "alerts": 318
       },
-      "trained_utc": "2026-11-23T14:09:12+00:00"
+      "trained_utc": "2026-11-23T14:17:13+00:00"
     },
     "logreg_balanced": {
       "description": "As logreg but class_weight='balanced' (calibration comparison)",
@@ -154,7 +154,50 @@
         "balanced_accuracy": 0.9078,
         "alerts": 377
       },
-      "trained_utc": "2026-11-23T14:09:18+00:00"
+      "trained_utc": "2026-11-23T14:17:20+00:00"
+    },
+    "hgb": {
+      "description": "Histogram gradient boosting, 4 leaves/tree, lr 0.03, 300 trees, unweighted, raw features + one-hot channel",
+      "track": "supervised",
+      "params": {
+        "max_leaf_nodes": 4,
+        "learning_rate": 0.03,
+        "max_iter": 300,
+        "min_samples_leaf": 20,
+        "l2_regularization": 1.0
+      },
+      "fit_on_normal_only": false,
+      "cv_folds": {
+        "pr_auc_mean": 0.9188,
+        "pr_auc_std": 0.0599,
+        "roc_auc_mean": 0.9605,
+        "roc_auc_std": 0.0321,
+        "n_folds": 15
+      },
+      "threshold_policy": {
+        "threshold": 0.3885312359997337,
+        "policy": "max F1 s.t. recall >= 0.8",
+        "cv_precision": 0.8153846153846154,
+        "cv_recall": 0.8255451713395638,
+        "cv_f1": 0.8204334365325078
+      },
+      "cv_oof_at_threshold": {
+        "n": 1594,
+        "prevalence": 0.2014,
+        "pr_auc": 0.9089,
+        "roc_auc": 0.9578,
+        "recall_at_top25pct": 0.8816,
+        "precision_at_top25pct": 0.7111,
+        "brier": 0.0516,
+        "threshold": 0.3885,
+        "precision": 0.8154,
+        "recall": 0.8255,
+        "f1": 0.8204,
+        "mcc": 0.7748,
+        "balanced_accuracy": 0.8892,
+        "alerts": 325
+      },
+      "trained_utc": "2026-11-23T14:17:16+00:00"
     }
   }
 }

@@ -50,6 +50,9 @@ def train_one(name: str, cfg: dict, train: pd.DataFrame) -> dict:
     oof_dir.mkdir(parents=True, exist_ok=True)
     pd.DataFrame({"segment": train["segment"], "episode": groups, "channel": train["channel"],
                   "anomaly": y, "score": oof}).to_csv(oof_dir / f"{name}.csv", index=False)
+    # Per-fold scores: folds are identical across models (same seed, y, groups), so they can
+    # be compared pairwise (evaluation/compare.py).
+    pd.DataFrame(res["folds"]).to_csv(oof_dir / f"{name}_folds.csv", index_label="fold")
 
     fit_mask = (y == 0) if spec.fit_on_normal_only else slice(None)
     final = clone(spec.factory(numeric, cfg["seed"])).fit(X[fit_mask], y[fit_mask])

@@ -87,6 +87,35 @@ One entry per day: what was done, evidence, risks, next decision.
   imbalance handled by the threshold, not by re-weighting.
 - Frozen test still untouched; it is scored once, after Day 4 model selection.
 
-**Next (D3)**
-- HistGradientBoosting (bounded grid, grouped CV); must beat 0.878 by more than fold noise.
-- SHAP global + per-segment explanations for the tree model.
+## D3 - Mon 23 Nov 2026 (started early) - Supervised challenger
+
+**Done**
+- `models/tune.py` generalised to model families with per-family simplicity order for the one-SE
+  rule; HistGradientBoosting added to the registry (early stopping off: its random internal
+  split would leak neighbouring segments).
+- `evaluation/compare.py`: paired comparison on identical folds, Nadeau-Bengio corrected t-test
+  -> `reports/comparisons.json`. Per-fold scores saved in `data/processed/oof/*_folds.csv`.
+- `models/explain.py`: SHAP from fold models on held-out segments ->
+  `data/processed/shap/hgb_oof.csv`; figures 14-17 (global bar, beeswarm, TP/FN waterfalls);
+  figures 18-20 (PR, calibration, paired folds).
+- `notebooks/03_gradient_boosting.ipynb` (executed). Tests: one-SE rule, corrected t-test,
+  SHAP additivity + out-of-sample coverage (23 tests).
+
+**Evidence**
+- HGB grid (leaves {4,8,16,31} x lr {0.03,0.1}): best 0.930; one-SE choice 4 leaves, lr 0.03.
+- hgb PR-AUC 0.919 ± 0.060 vs logreg 0.878 ± 0.078; Brier 0.052 vs 0.060; at policy threshold
+  both ~0.82 precision / ~0.82 recall.
+- Paired folds: hgb better in 11/15, mean +0.040. Naive t-test p = 0.034; corrected p = 0.30.
+- SHAP drivers: n_peaks >> diff2_var > diff2_peaks > var ratios; channel contribution small.
+- Errors: FN concentrated in CADC0872 (22) and CADC0892 (15, recall 0.44), typically single-peak;
+  FP concentrated in CADC0894 (26 vs 13 TP), long multi-peak normal segments.
+
+**Decisions**
+- hgb = primary supervised model (better point estimate, variance, calibration; exact SHAP).
+  logreg = interpretable baseline. Report states the CV difference is not significant.
+- Both go to the frozen test once, after Day 4.
+
+**Next (D4)**
+- Isolation Forest + PCA reconstruction fit on train-normal only, same grouped CV; contamination
+  sensitivity; do novelty models help on the supervised model's weak spots (CADC0892/0894)?
+- Frozen-test evaluation script (run once) for the final candidate set.

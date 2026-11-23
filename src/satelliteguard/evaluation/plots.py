@@ -22,7 +22,7 @@ from satelliteguard import PROJECT_ROOT, load_config  # noqa: E402
 from satelliteguard.eda import _save  # noqa: E402
 
 COLORS = {"prevalence": "#999999", "channel_only": "#C9A227", "logreg": "#4C72B0",
-          "logreg_balanced": "#8172B2"}
+          "logreg_balanced": "#8172B2", "hgb": "#DD5555"}
 
 
 def _oof(cfg, name):
@@ -95,6 +95,20 @@ def logreg_coefficients(name="logreg", out_dir=None, fname="13_logreg_coefficien
     return _save(fig, out_dir, fname)
 
 
+def fold_scatter(cfg, a, b, out_dir=None, fname="20_cv_paired_folds"):
+    """Per-fold PR-AUC of model a vs b on identical folds; points above the diagonal favour b."""
+    d = cfg["paths"]["processed"] / "oof"
+    fa, fb = pd.read_csv(d / f"{a}_folds.csv"), pd.read_csv(d / f"{b}_folds.csv")
+    fig, ax = plt.subplots(figsize=(5.5, 5.5))
+    lo = min(fa["pr_auc"].min(), fb["pr_auc"].min()) - 0.02
+    ax.plot([lo, 1], [lo, 1], ls="--", color="#999")
+    ax.scatter(fa["pr_auc"], fb["pr_auc"], c=fa["repeat"], cmap="viridis", s=50)
+    ax.set(xlim=(lo, 1), ylim=(lo, 1), xlabel=f"{a} PR-AUC", ylabel=f"{b} PR-AUC",
+           title=f"Paired folds: {b} above diagonal in {(fb['pr_auc'] > fa['pr_auc']).sum()}"
+                 f"/{len(fa)}\n(colour = CV repeat)")
+    return _save(fig, out_dir, fname)
+
+
 def main() -> None:
     cfg = load_config()
     out = cfg["paths"]["figures"]
@@ -102,6 +116,9 @@ def main() -> None:
     reliability(cfg, ["logreg", "logreg_balanced"], out)
     threshold_tradeoff(cfg, "logreg", out)
     logreg_coefficients(out_dir=out)
+    pr_curves(cfg, ["prevalence", "channel_only", "logreg", "hgb"], out, "18_cv_pr_logreg_vs_hgb")
+    reliability(cfg, ["logreg", "hgb"], out, "19_cv_calibration_logreg_vs_hgb")
+    fold_scatter(cfg, "logreg", "hgb", out)
     print(f"Figures written to {out}")
 
 
