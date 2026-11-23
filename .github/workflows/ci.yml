@@ -33,5 +33,8 @@ jobs:
       - name: Data contract
         run: python -m satelliteguard.data.validate
 
+      - name: Rebuild segment index (episodes)
+        run: python -m satelliteguard.data.episodes
+
       - name: Tests
         run: pytest -q

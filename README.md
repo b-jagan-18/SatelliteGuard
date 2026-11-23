@@ -40,12 +40,21 @@ Source: Ruszczak et al., *OPSSAT-AD — anomaly detection dataset for satellite 
 Zenodo [15108715](https://zenodo.org/records/15108715), CC-BY-4.0.
 File hashes are recorded in [data/manifest.json](data/manifest.json).
 
+## Key finding so far: neighbour leakage
+
+Segments are back-to-back slices of continuous telemetry, and the publisher's train/test split is
+interleaved (89% of test segments touch a training segment). Random cross-validation therefore
+overstates PR-AUC by ~0.04. SatelliteGuard groups segments into **contiguous episodes** and uses
+episode-grouped CV for all model selection. Details: [notebooks/01_eda.ipynb](notebooks/01_eda.ipynb).
+
+![Segment timeline](reports/figures/02_segment_timeline.png)
+
 ## Approach
 
 - **Supervised:** calibrated logistic regression, gradient-boosted trees (class-weighted).
 - **Unsupervised / novelty:** Isolation Forest and PCA reconstruction, fit on train-normal only.
-- **Validation:** repeated stratified CV inside the train split; every transform is fit inside
-  folds; thresholds chosen from CV predictions; the frozen test is scored once.
+- **Validation:** repeated episode-grouped stratified CV inside the train split; every transform
+  is fit inside folds; thresholds chosen from CV predictions; the frozen test is scored once.
 - **Primary metric:** PR-AUC (≈20% anomaly rate), plus recall/precision at a review budget,
   MCC, calibration.
 

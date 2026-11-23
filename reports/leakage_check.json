@@ -1,0 +1,39 @@
+{
+  "random": {
+    "model_pr_auc": {
+      "mean": 0.9672,
+      "std": 0.0133
+    },
+    "model_roc_auc": {
+      "mean": 0.986,
+      "std": 0.0065
+    },
+    "channel_only_pr_auc": {
+      "mean": 0.2827,
+      "std": 0.0185
+    }
+  },
+  "grouped": {
+    "model_pr_auc": {
+      "mean": 0.9309,
+      "std": 0.0464
+    },
+    "model_roc_auc": {
+      "mean": 0.9694,
+      "std": 0.0227
+    },
+    "channel_only_pr_auc": {
+      "mean": 0.2496,
+      "std": 0.0498
+    }
+  },
+  "optimism_pr_auc": 0.0363,
+  "prevalence": 0.2014,
+  "setup": {
+    "data": "train split only (train=1); frozen test untouched",
+    "model": "HistGradientBoosting (fixed hyperparameters) + one-hot channel",
+    "n_splits": 5,
+    "n_repeats": 3,
+    "groups": "contiguous episodes (gap <= 10 s on same channel)"
+  }
+}
