@@ -1,0 +1,144 @@
+{
+  "all_passed": true,
+  "checks": {
+    "segments_columns": {
+      "passed": true,
+      "detail": [
+        "channel",
+        "timestamp",
+        "value",
+        "label",
+        "sampling",
+        "anomaly",
+        "segment",
+        "train"
+      ]
+    },
+    "dataset_required_columns": {
+      "passed": true,
+      "detail": [
+        "segment",
+        "anomaly",
+        "train",
+        "channel",
+        "sampling",
+        "duration",
+        "len",
+        "mean",
+        "var",
+        "std",
+        "kurtosis",
+        "skew",
+        "n_peaks",
+        "smooth10_n_peaks",
+        "smooth20_n_peaks",
+        "diff_peaks",
+        "diff2_peaks",
+        "diff_var",
+        "diff2_var",
+        "gaps_squared",
+        "len_weighted",
+        "var_div_duration",
+        "var_div_len"
+      ]
+    },
+    "dataset_unique_segment_ids": {
+      "passed": true,
+      "detail": 0
+    },
+    "dataset_no_nulls": {
+      "passed": true,
+      "detail": {}
+    },
+    "segments_no_nulls": {
+      "passed": true,
+      "detail": {}
+    },
+    "one_channel_target_split_per_segment": {
+      "passed": true,
+      "detail": []
+    },
+    "label_vs_anomaly_crosstab": {
+      "passed": true,
+      "detail": {
+        "0": {
+          "anomaly": 203229
+        },
+        "1": {
+          "anomaly": 100264
+        }
+      }
+    },
+    "segment_ids_match_between_files": {
+      "passed": true,
+      "detail": {
+        "only_in_segments": 0,
+        "only_in_dataset": 0
+      }
+    },
+    "target_split_channel_agree_between_files": {
+      "passed": true,
+      "detail": {
+        "anomaly": 0,
+        "train": 0,
+        "channel": 0
+      }
+    },
+    "split_counts_match_publisher": {
+      "passed": true,
+      "detail": {
+        "train=0,anomaly=0": 416,
+        "train=0,anomaly=1": 113,
+        "train=1,anomaly=0": 1273,
+        "train=1,anomaly=1": 321
+      }
+    },
+    "timestamps_parse": {
+      "passed": true,
+      "detail": 0
+    },
+    "timestamps_monotonic_within_segment": {
+      "passed": true,
+      "detail": {
+        "n_segments": 0,
+        "examples": []
+      }
+    }
+  },
+  "info": {
+    "n_raw_rows": 303493,
+    "n_segments": 2123,
+    "channels": {
+      "CADC0872": 546,
+      "CADC0873": 593,
+      "CADC0874": 194,
+      "CADC0884": 158,
+      "CADC0886": 11,
+      "CADC0888": 252,
+      "CADC0890": 14,
+      "CADC0892": 211,
+      "CADC0894": 144
+    },
+    "anomaly_rate_by_channel": {
+      "CADC0872": 0.24,
+      "CADC0873": 0.177,
+      "CADC0874": 0.356,
+      "CADC0884": 0.0,
+      "CADC0886": 0.273,
+      "CADC0888": 0.238,
+      "CADC0890": 0.786,
+      "CADC0892": 0.161,
+      "CADC0894": 0.146
+    },
+    "segment_length": {
+      "count": 2123.0,
+      "mean": 143.0,
+      "std": 152.3,
+      "min": 8.0,
+      "25%": 40.0,
+      "50%": 70.0,
+      "75%": 201.0,
+      "max": 1040.0
+    }
+  }
+}

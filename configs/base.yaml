@@ -1,0 +1,22 @@
+# Single source of truth for paths and global settings.
+seed: 42
+
+paths:
+  raw: data/raw
+  processed: data/processed
+  manifest: data/manifest.json
+  audit: data/processed/data_audit.json
+  figures: reports/figures
+  metrics: reports/metrics.json
+
+data:
+  zenodo_record: 15108715
+  target: anomaly          # numeric project target (1 = anomalous segment)
+  split_flag: train        # publisher split: 1 = train, 0 = frozen test
+  id_col: segment
+  # Never used as predictors:
+  exclude_from_features: [segment, anomaly, train, label]
+
+cv:
+  n_splits: 5
+  n_repeats: 3

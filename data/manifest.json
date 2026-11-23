@@ -1,0 +1,47 @@
+{
+  "source": "https://zenodo.org/records/15108715",
+  "doi": "10.5281/zenodo.15108715",
+  "license": "cc-by-4.0",
+  "record_updated": "2025-03-30T13:38:37.031869+00:00",
+  "downloaded_utc": "2026-11-23T11:58:14+00:00",
+  "files": [
+    {
+      "file": "LICENSE",
+      "size_bytes": 1091,
+      "md5": "ea8befa9af2b37b7a54b5a16fc3712b0",
+      "sha256": "76d2ff9834ed2bb1356d9f7eb303c289817374bb1d5bbe5af86817e73e0f47d2"
+    },
+    {
+      "file": "dataset.csv",
+      "size_bytes": 507550,
+      "md5": "5246fdc5e4630a4cecbf7fb6bc8b795e",
+      "sha256": "b524177da6f516d5c9f63c7acbc385341f0ad42046ef20c1bed2d25e51b98f02",
+      "rows": 2123
+    },
+    {
+      "file": "dataset_generator.ipynb",
+      "size_bytes": 8089,
+      "md5": "f0cdeb8f965715d326ebeb625362b71e",
+      "sha256": "409047fc42fbc415b7b16c85e24773127d1266e5034ae5be47b69d5323b120e2"
+    },
+    {
+      "file": "modeling_examples.ipynb",
+      "size_bytes": 7174,
+      "md5": "044eeff4bf3c767326e3ffd12c3b7a09",
+      "sha256": "224f8a73561c25e421f1eb72b84a850118002eecf278642c690e8b4fce2d4faa"
+    },
+    {
+      "file": "requirements.txt",
+      "size_bytes": 169,
+      "md5": "252b98857695f9695589f90a590a49e6",
+      "sha256": "fd06761596b7271f90cb7183ced57b96884d02ae74195b71dbe26b683a19aaaf"
+    },
+    {
+      "file": "segments.csv",
+      "size_bytes": 18987091,
+      "md5": "72f109630abb933a386106897a631188",
+      "sha256": "d5201e9e751eb2a53a0ff7c11567dc4239f594ea4b479b2aa66fe67ddcbcb9ba",
+      "rows": 303493
+    }
+  ]
+}
