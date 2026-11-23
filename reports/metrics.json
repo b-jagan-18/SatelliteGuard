@@ -1,0 +1,160 @@
+{
+  "cv": {
+    "prevalence": {
+      "description": "Constant score = training anomaly rate",
+      "track": "reference",
+      "params": {},
+      "fit_on_normal_only": false,
+      "cv_folds": {
+        "pr_auc_mean": 0.2014,
+        "pr_auc_std": 0.0021,
+        "roc_auc_mean": 0.5,
+        "roc_auc_std": 0.0,
+        "n_folds": 15
+      },
+      "threshold_policy": {
+        "threshold": 0.20088884997030773,
+        "policy": "max F1 s.t. recall >= 0.8",
+        "cv_precision": 0.2032154340836013,
+        "cv_recall": 0.9844236760124611,
+        "cv_f1": 0.3368869936034115
+      },
+      "cv_oof_at_threshold": {
+        "n": 1594,
+        "prevalence": 0.2014,
+        "pr_auc": 0.2114,
+        "roc_auc": 0.4889,
+        "recall_at_top25pct": 0.2866,
+        "precision_at_top25pct": 0.2312,
+        "brier": 0.1608,
+        "threshold": 0.2009,
+        "precision": 0.2032,
+        "recall": 0.9844,
+        "f1": 0.3369,
+        "mcc": 0.0289,
+        "balanced_accuracy": 0.5056,
+        "alerts": 1555
+      },
+      "trained_utc": "2026-11-23T14:09:05+00:00"
+    },
+    "channel_only": {
+      "description": "Training anomaly rate of the segment's channel",
+      "track": "reference",
+      "params": {},
+      "fit_on_normal_only": false,
+      "cv_folds": {
+        "pr_auc_mean": 0.2496,
+        "pr_auc_std": 0.0498,
+        "roc_auc_mean": 0.4853,
+        "roc_auc_std": 0.1371,
+        "n_folds": 15
+      },
+      "threshold_policy": {
+        "threshold": 0.06341891595347816,
+        "policy": "max F1 s.t. recall >= 0.8",
+        "cv_precision": 0.21807065217391305,
+        "cv_recall": 1.0,
+        "cv_f1": 0.3580591187953151
+      },
+      "cv_oof_at_threshold": {
+        "n": 1594,
+        "prevalence": 0.2014,
+        "pr_auc": 0.198,
+        "roc_auc": 0.4694,
+        "recall_at_top25pct": 0.2181,
+        "precision_at_top25pct": 0.1759,
+        "brier": 0.1723,
+        "threshold": 0.0634,
+        "precision": 0.2181,
+        "recall": 1.0,
+        "f1": 0.3581,
+        "mcc": 0.1446,
+        "balanced_accuracy": 0.5479,
+        "alerts": 1472
+      },
+      "trained_utc": "2026-11-23T14:09:06+00:00"
+    },
+    "logreg": {
+      "description": "L2 logistic regression, quantile-normal scaling + one-hot channel, unweighted (log-loss fit keeps probabilities calibrated)",
+      "track": "supervised",
+      "params": {
+        "C": 1.0,
+        "scaling": "quantile",
+        "class_weight": null
+      },
+      "fit_on_normal_only": false,
+      "cv_folds": {
+        "pr_auc_mean": 0.8785,
+        "pr_auc_std": 0.0781,
+        "roc_auc_mean": 0.9446,
+        "roc_auc_std": 0.0504,
+        "n_folds": 15
+      },
+      "threshold_policy": {
+        "threshold": 0.3829030518101562,
+        "policy": "max F1 s.t. recall >= 0.8",
+        "cv_precision": 0.8270440251572327,
+        "cv_recall": 0.8193146417445483,
+        "cv_f1": 0.8231611893583725
+      },
+      "cv_oof_at_threshold": {
+        "n": 1594,
+        "prevalence": 0.2014,
+        "pr_auc": 0.8359,
+        "roc_auc": 0.9389,
+        "recall_at_top25pct": 0.891,
+        "precision_at_top25pct": 0.7186,
+        "brier": 0.0598,
+        "threshold": 0.3829,
+        "precision": 0.827,
+        "recall": 0.8193,
+        "f1": 0.8232,
+        "mcc": 0.7788,
+        "balanced_accuracy": 0.8881,
+        "alerts": 318
+      },
+      "trained_utc": "2026-11-23T14:09:12+00:00"
+    },
+    "logreg_balanced": {
+      "description": "As logreg but class_weight='balanced' (calibration comparison)",
+      "track": "supervised",
+      "params": {
+        "C": 1.0,
+        "scaling": "quantile",
+        "class_weight": "balanced"
+      },
+      "fit_on_normal_only": false,
+      "cv_folds": {
+        "pr_auc_mean": 0.873,
+        "pr_auc_std": 0.0831,
+        "roc_auc_mean": 0.9475,
+        "roc_auc_std": 0.0471,
+        "n_folds": 15
+      },
+      "threshold_policy": {
+        "threshold": 0.46376909469949057,
+        "policy": "max F1 s.t. recall >= 0.8",
+        "cv_precision": 0.7559681697612732,
+        "cv_recall": 0.8878504672897196,
+        "cv_f1": 0.8166189111747851
+      },
+      "cv_oof_at_threshold": {
+        "n": 1594,
+        "prevalence": 0.2014,
+        "pr_auc": 0.8286,
+        "roc_auc": 0.9417,
+        "recall_at_top25pct": 0.891,
+        "precision_at_top25pct": 0.7186,
+        "brier": 0.0712,
+        "threshold": 0.4638,
+        "precision": 0.756,
+        "recall": 0.8879,
+        "f1": 0.8166,
+        "mcc": 0.7697,
+        "balanced_accuracy": 0.9078,
+        "alerts": 377
+      },
+      "trained_utc": "2026-11-23T14:09:18+00:00"
+    }
+  }
+}

@@ -21,6 +21,10 @@ pip install -e .
 
 python -m satelliteguard.data.download   # fetch + checksum-verify Zenodo files
 python -m satelliteguard.data.validate   # data-contract audit (red gate)
+python -m satelliteguard.data.episodes   # segment index + contiguous episodes
+python -m satelliteguard.models.tune     # bounded hyperparameter grid
+python -m satelliteguard.models.train    # grouped CV, thresholds, final models
+python -m satelliteguard.evaluation.plots
 pytest -q
 ```
 
@@ -48,6 +52,17 @@ overstates PR-AUC by ~0.04. SatelliteGuard groups segments into **contiguous epi
 episode-grouped CV for all model selection. Details: [notebooks/01_eda.ipynb](notebooks/01_eda.ipynb).
 
 ![Segment timeline](reports/figures/02_segment_timeline.png)
+
+## Results so far (episode-grouped CV, train split)
+
+| Model | PR-AUC (mean ± sd, 15 folds) | Precision / recall at review threshold |
+|---|---|---|
+| Prevalence (reference) | 0.201 ± 0.002 | – |
+| Channel only (reference) | 0.250 ± 0.050 | – |
+| Logistic regression | **0.878 ± 0.078** | 0.83 / 0.82 |
+
+The frozen test split has not been scored yet; it is used once, after model selection.
+Details: [notebooks/02_baselines.ipynb](notebooks/02_baselines.ipynb).
 
 ## Approach
 

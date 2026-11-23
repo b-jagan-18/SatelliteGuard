@@ -53,6 +53,40 @@ One entry per day: what was done, evidence, risks, next decision.
 - Channel-only baseline is a reference row in every results table.
 - Logistic baseline: regularised; coefficients not interpreted as independent effects.
 
-**Next (D2)**
-- Feature pipeline + metric module (PR-AUC, recall@budget, MCC, Brier) writing `reports/metrics.json`.
-- Calibrated logistic regression baseline under grouped CV; threshold policy from CV predictions.
+## D2 - Mon 23 Nov 2026 (started early) - Reproducible baseline
+
+**Done**
+- `features.py` (modelling table, quantile/standard/none preprocessors, channel one-hot inside
+  pipeline), `evaluation/metrics.py` (PR-AUC, ROC-AUC, recall/precision@top-25%, Brier, P/R/F1,
+  MCC, balanced accuracy; threshold policy), `evaluation/cv.py` (grouped repeated CV),
+  `models/registry.py`, `models/tune.py`, `models/train.py`, `evaluation/plots.py`.
+- `notebooks/02_baselines.ipynb` (executed); figures 10-13; `reports/metrics.json` (`cv` section);
+  OOF predictions in `data/processed/oof/`; final models in `models/*.joblib`.
+- Tests: metric correctness, recall floor, grouped folds never split an episode, OOF covers the
+  train split only (19 tests total).
+
+**Evidence (episode-grouped CV, 15 folds, train split only)**
+
+| model | PR-AUC | ROC-AUC | P / R at policy | Brier |
+|---|---|---|---|---|
+| prevalence | 0.201 ± 0.002 | 0.500 | - | - |
+| channel_only | 0.250 ± 0.050 | 0.485 | - | - |
+| **logreg** (C=1, quantile, unweighted) | **0.878 ± 0.078** | 0.945 | 0.83 / 0.82 | 0.060 |
+| logreg_balanced | 0.873 ± 0.083 | 0.948 | 0.76 / 0.89 | 0.071 |
+
+- Grid C in {0.01..100} x {quantile, standard}: best C=100 (0.889) but within noise; one-SE rule
+  selects C=1, quantile.
+- class_weight="balanced" degrades calibration (Brier 0.060 -> 0.071) with no PR-AUC gain.
+- Logistic coefficients show opposite signs on correlated pairs (duration/len_weighted,
+  var/var_div_len) -> not interpretable individually.
+
+**Decisions**
+- Primary metric reported as fold mean ± sd; differences < ~1 sd are treated as ties.
+- Threshold policy: max F1 s.t. recall >= 0.80, chosen on OOF train predictions (logreg: 0.383).
+- Primary logistic model is unweighted (calibrated probabilities shown in dashboard);
+  imbalance handled by the threshold, not by re-weighting.
+- Frozen test still untouched; it is scored once, after Day 4 model selection.
+
+**Next (D3)**
+- HistGradientBoosting (bounded grid, grouped CV); must beat 0.878 by more than fold noise.
+- SHAP global + per-segment explanations for the tree model.
