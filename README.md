@@ -9,16 +9,23 @@ the ESA OPS-SAT telemetry dataset (OPSSAT-AD). It ranks telemetry segments for o
 > confirm spacecraft hardware faults. Labels are segment-level benchmark annotations, and channel
 > IDs (e.g. `CADC0872`) are opaque — no subsystem meaning is claimed.
 
-**Status:** models, frozen-test evaluation and dashboard complete; technical report in progress
-(deadline 30 Nov 2026) — see [docs/decision_log.md](docs/decision_log.md).
+**Technical report:** [reports/technical_report.pdf](reports/technical_report.pdf)
+([Markdown version](reports/technical_report.md)) · **Model card:** [docs/model_card.md](docs/model_card.md)
+· **Decision log:** [docs/decision_log.md](docs/decision_log.md)
 
 ## Quick start
 
 ```bash
 python -m venv .venv
 # Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-lock.txt   # exact versions behind the committed results
 pip install -e .
+python scripts/reproduce.py            # full pipeline + diff of every number vs the commit
+```
+
+Step by step:
+
+```bash
 
 python -m satelliteguard.data.download   # fetch + checksum-verify Zenodo files
 python -m satelliteguard.data.validate   # data-contract audit (red gate)
@@ -37,7 +44,12 @@ python -m satelliteguard.dashboard.extract  # small committed extracts for the d
 pytest -q
 
 streamlit run app/streamlit_app.py          # dashboard (needs only committed files)
+python scripts/capture_dashboard.py         # dashboard screenshots for the report (Chrome/Edge)
+python -m satelliteguard.report             # report: numbers filled from reports/*.json -> PDF
 ```
+
+`requirements.txt` lists minimum versions; `requirements-lock.txt` pins the exact environment
+(Python 3.13) that produced the committed results.
 
 ## Dashboard
 
@@ -124,9 +136,10 @@ data/processed/     audit, OOF/test predictions, SHAP, dashboard extracts
 src/satelliteguard/ data, models, evaluation, dashboard (extract + queries) packages
 app/                Streamlit dashboard (streamlit_app.py + views/)
 notebooks/          EDA and analysis
-reports/            figures, metrics.json, technical report
-tests/              data-contract and pipeline tests
-docs/               decision log
+reports/            figures, metrics.json, technical report (PDF + Markdown)
+scripts/            reproduce.py (clean-run diff), capture_dashboard.py
+tests/              data-contract, pipeline, dashboard and report tests
+docs/               decision log, model card, report template + stylesheet
 ```
 
 ## References

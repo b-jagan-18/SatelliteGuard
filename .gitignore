@@ -21,6 +21,9 @@ models/tmp/
 # Local tool config (machine-specific paths)
 .claude/
 
+# Report build intermediate (contains an absolute file:// base path)
+reports/technical_report.html
+
 # OS / editor
 .DS_Store
 Thumbs.db
