@@ -12,9 +12,9 @@ Format adapted from Mitchell et al., *Model Cards for Model Reporting* (FAT* 201
 | **Inputs** | 18 publisher summary features per segment (duration, length, mean, variance, std, kurtosis, skew, peak counts, first/second-difference statistics, gap and ratio features) + sampling interval + channel one-hot (9 channels). Novelty models do not use the channel. |
 | **Output** | Probability that the segment carries the *anomalous* benchmark label; flag if ≥ **0.389** |
 | **Artifacts** | `models/hgb.joblib`, `models/pca_recon.joblib`, `models/logreg.joblib` (scikit-learn 1.9.1; see `requirements-lock.txt`) |
-| **Version / date** | v1.0, 24 Nov 2026 (frozen-test run recorded in `reports/test_lock.json`) |
+| **Version / date** | v1.0.0; models frozen 24 Nov 2026 (frozen-test run recorded in `reports/test_lock.json`) |
 | **Author** | GitHub `b-jagan-18` (solo FOML course project) |
-| **License** | Code: see repository. Data: OPSSAT-AD, CC-BY-4.0 |
+| **License** | Code: MIT (`LICENSE`). Data: OPSSAT-AD, CC-BY-4.0 |
 
 ## Intended use
 

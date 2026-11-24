@@ -540,7 +540,7 @@ triggers an "exploratory" warning, so a re-tuned number cannot be mistaken for a
 | Leakage controls | transforms inside pipelines; episode-grouped folds; early stopping disabled; tests assert no episode crosses a fold |
 | Test-set discipline | pre-registration in the decision log; run-once lock file with commit hash; test asserts the lock refuses a second run |
 | Environment | `requirements-lock.txt` pins the exact versions used (Python 3.13, scikit-learn 1.9.1) |
-| Automation | 39 pytest tests (data contract, metrics, grouped CV, one-SE rule, corrected t-test, SHAP additivity, novelty models, test-prediction contract, dashboard); ruff lint; GitHub Actions CI |
+| Automation | 58 pytest tests (data contract, metrics, grouped CV, one-SE rule, corrected t-test, SHAP additivity, novelty models, test-prediction contract, dashboard, report and README/model-card numbers vs `metrics.json`); ruff lint; GitHub Actions CI (Ubuntu, Python 3.11) green on every commit |
 | Traceability | `docs/decision_log.md` records each day's decisions and evidence; `docs/model_card.md` |
 
 **Clean-environment dry run.** `scripts/reproduce.py` re-runs the whole pipeline (download, validation, episodes,
@@ -697,5 +697,5 @@ notebooks/01-04              executed analysis notebooks
 reports/                     metrics.json, comparisons.json, test_lock.json, figures/, this report
 scripts/                     reproduce.py (clean-run diff), capture_dashboard.py
 docs/                        decision_log.md, model_card.md, report sources
-tests/                       39 tests; CI in .github/workflows/ci.yml
+tests/                       58 tests; CI in .github/workflows/ci.yml
 ```
