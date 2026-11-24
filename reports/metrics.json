@@ -198,6 +198,1080 @@
         "alerts": 325
       },
       "trained_utc": "2026-11-23T14:17:16+00:00"
+    },
+    "pca_recon": {
+      "description": "PCA reconstruction error (3 components) on quantile-scaled features, fit on train-normal only",
+      "track": "unsupervised",
+      "params": {
+        "n_components": 3
+      },
+      "fit_on_normal_only": true,
+      "cv_folds": {
+        "pr_auc_mean": 0.8498,
+        "pr_auc_std": 0.0654,
+        "roc_auc_mean": 0.9346,
+        "roc_auc_std": 0.0266,
+        "n_folds": 15
+      },
+      "threshold_policy": {
+        "threshold": 24.679411778285615,
+        "policy": "max F1 s.t. recall >= 0.8",
+        "cv_precision": 0.675392670157068,
+        "cv_recall": 0.8037383177570093,
+        "cv_f1": 0.7339971550497866
+      },
+      "cv_oof_at_threshold": {
+        "n": 1594,
+        "prevalence": 0.2014,
+        "pr_auc": 0.7871,
+        "roc_auc": 0.9201,
+        "recall_at_top25pct": 0.8069,
+        "precision_at_top25pct": 0.6508,
+        "threshold": 24.6794,
+        "precision": 0.6754,
+        "recall": 0.8037,
+        "f1": 0.734,
+        "mcc": 0.6636,
+        "balanced_accuracy": 0.8532,
+        "alerts": 382
+      },
+      "trained_utc": "2026-11-24T15:22:37+00:00"
+    },
+    "iforest": {
+      "description": "Isolation Forest (300 trees, 128 samples/tree) on quantile-scaled features, fit on train-normal only",
+      "track": "unsupervised",
+      "params": {
+        "n_estimators": 300,
+        "max_samples": 128,
+        "max_features": 1.0
+      },
+      "fit_on_normal_only": true,
+      "cv_folds": {
+        "pr_auc_mean": 0.6113,
+        "pr_auc_std": 0.1596,
+        "roc_auc_mean": 0.8462,
+        "roc_auc_std": 0.0696,
+        "n_folds": 15
+      },
+      "threshold_policy": {
+        "threshold": 0.508761740101347,
+        "policy": "max F1 s.t. recall >= 0.8",
+        "cv_precision": 0.4148606811145511,
+        "cv_recall": 0.8348909657320872,
+        "cv_f1": 0.5542916235780765
+      },
+      "cv_oof_at_threshold": {
+        "n": 1594,
+        "prevalence": 0.2014,
+        "pr_auc": 0.4517,
+        "roc_auc": 0.8129,
+        "recall_at_top25pct": 0.567,
+        "precision_at_top25pct": 0.4573,
+        "threshold": 0.5088,
+        "precision": 0.4149,
+        "recall": 0.8349,
+        "f1": 0.5543,
+        "mcc": 0.4394,
+        "balanced_accuracy": 0.769,
+        "alerts": 646
+      },
+      "trained_utc": "2026-11-24T15:23:55+00:00"
+    }
+  },
+  "test": {
+    "prevalence": {
+      "overall": {
+        "n": 529,
+        "prevalence": 0.2136,
+        "pr_auc": 0.2136,
+        "roc_auc": 0.5,
+        "recall_at_top25pct": 0.4248,
+        "precision_at_top25pct": 0.3636,
+        "brier": 0.1681,
+        "threshold": 0.2009,
+        "precision": 0.2136,
+        "recall": 1.0,
+        "f1": 0.352,
+        "mcc": 0.0,
+        "balanced_accuracy": 0.5,
+        "alerts": 529
+      },
+      "bootstrap": {
+        "pr_auc_ci95": [
+          0.1261,
+          0.2964
+        ],
+        "precision_ci95": [
+          0.1261,
+          0.2964
+        ],
+        "recall_ci95": [
+          1.0,
+          1.0
+        ],
+        "n_boot": 2000,
+        "unit": "episode"
+      },
+      "isolated_segments": {
+        "n": 56,
+        "prevalence": 0.3571,
+        "pr_auc": 0.3571,
+        "roc_auc": 0.5,
+        "recall_at_top25pct": 0.2,
+        "precision_at_top25pct": 0.2857,
+        "threshold": 0.2009,
+        "precision": 0.3571,
+        "recall": 1.0,
+        "f1": 0.5263,
+        "mcc": 0.0,
+        "balanced_accuracy": 0.5,
+        "alerts": 56
+      },
+      "per_channel": {
+        "CADC0872": {
+          "n": 132,
+          "prevalence": 0.2424,
+          "pr_auc": 0.2424,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.25,
+          "precision_at_top25pct": 0.2424,
+          "threshold": 0.2009,
+          "precision": 0.2424,
+          "recall": 1.0,
+          "f1": 0.3902,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 132
+        },
+        "CADC0873": {
+          "n": 153,
+          "prevalence": 0.2026,
+          "pr_auc": 0.2026,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.5161,
+          "precision_at_top25pct": 0.4211,
+          "threshold": 0.2009,
+          "precision": 0.2026,
+          "recall": 1.0,
+          "f1": 0.337,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 153
+        },
+        "CADC0874": {
+          "n": 52,
+          "prevalence": 0.4423,
+          "pr_auc": 0.4423,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.4348,
+          "precision_at_top25pct": 0.7692,
+          "threshold": 0.2009,
+          "precision": 0.4423,
+          "recall": 1.0,
+          "f1": 0.6133,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 52
+        },
+        "CADC0884": {
+          "n": 36,
+          "anomalies": 0,
+          "flagged": 36
+        },
+        "CADC0886": {
+          "n": 4,
+          "prevalence": 0.25,
+          "pr_auc": 0.25,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.0,
+          "precision_at_top25pct": 0.0,
+          "threshold": 0.2009,
+          "precision": 0.25,
+          "recall": 1.0,
+          "f1": 0.4,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 4
+        },
+        "CADC0888": {
+          "n": 64,
+          "prevalence": 0.1875,
+          "pr_auc": 0.1875,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.0833,
+          "precision_at_top25pct": 0.0625,
+          "threshold": 0.2009,
+          "precision": 0.1875,
+          "recall": 1.0,
+          "f1": 0.3158,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 64
+        },
+        "CADC0890": {
+          "n": 2,
+          "anomalies": 2,
+          "flagged": 2
+        },
+        "CADC0892": {
+          "n": 53,
+          "prevalence": 0.1321,
+          "pr_auc": 0.1321,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.1429,
+          "precision_at_top25pct": 0.0769,
+          "threshold": 0.2009,
+          "precision": 0.1321,
+          "recall": 1.0,
+          "f1": 0.2333,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 53
+        },
+        "CADC0894": {
+          "n": 33,
+          "prevalence": 0.1515,
+          "pr_auc": 0.1515,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.0,
+          "precision_at_top25pct": 0.0,
+          "threshold": 0.2009,
+          "precision": 0.1515,
+          "recall": 1.0,
+          "f1": 0.2632,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 33
+        }
+      }
+    },
+    "channel_only": {
+      "overall": {
+        "n": 529,
+        "prevalence": 0.2136,
+        "pr_auc": 0.3171,
+        "roc_auc": 0.6246,
+        "recall_at_top25pct": 0.3717,
+        "precision_at_top25pct": 0.3182,
+        "brier": 0.1588,
+        "threshold": 0.0634,
+        "precision": 0.2292,
+        "recall": 1.0,
+        "f1": 0.3729,
+        "mcc": 0.1408,
+        "balanced_accuracy": 0.5433,
+        "alerts": 493
+      },
+      "bootstrap": {
+        "pr_auc_ci95": [
+          0.1705,
+          0.5244
+        ],
+        "precision_ci95": [
+          0.1428,
+          0.3162
+        ],
+        "recall_ci95": [
+          1.0,
+          1.0
+        ],
+        "n_boot": 2000,
+        "unit": "episode"
+      },
+      "isolated_segments": {
+        "n": 56,
+        "prevalence": 0.3571,
+        "pr_auc": 0.4905,
+        "roc_auc": 0.616,
+        "recall_at_top25pct": 0.35,
+        "precision_at_top25pct": 0.5,
+        "threshold": 0.0634,
+        "precision": 0.3774,
+        "recall": 1.0,
+        "f1": 0.5479,
+        "mcc": 0.1773,
+        "balanced_accuracy": 0.5417,
+        "alerts": 53
+      },
+      "per_channel": {
+        "CADC0872": {
+          "n": 132,
+          "prevalence": 0.2424,
+          "pr_auc": 0.2424,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.25,
+          "precision_at_top25pct": 0.2424,
+          "threshold": 0.0634,
+          "precision": 0.2424,
+          "recall": 1.0,
+          "f1": 0.3902,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 132
+        },
+        "CADC0873": {
+          "n": 153,
+          "prevalence": 0.2026,
+          "pr_auc": 0.2026,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.5161,
+          "precision_at_top25pct": 0.4211,
+          "threshold": 0.0634,
+          "precision": 0.2026,
+          "recall": 1.0,
+          "f1": 0.337,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 153
+        },
+        "CADC0874": {
+          "n": 52,
+          "prevalence": 0.4423,
+          "pr_auc": 0.4423,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.4348,
+          "precision_at_top25pct": 0.7692,
+          "threshold": 0.0634,
+          "precision": 0.4423,
+          "recall": 1.0,
+          "f1": 0.6133,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 52
+        },
+        "CADC0884": {
+          "n": 36,
+          "anomalies": 0,
+          "flagged": 0
+        },
+        "CADC0886": {
+          "n": 4,
+          "prevalence": 0.25,
+          "pr_auc": 0.25,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.0,
+          "precision_at_top25pct": 0.0,
+          "threshold": 0.0634,
+          "precision": 0.25,
+          "recall": 1.0,
+          "f1": 0.4,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 4
+        },
+        "CADC0888": {
+          "n": 64,
+          "prevalence": 0.1875,
+          "pr_auc": 0.1875,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.0833,
+          "precision_at_top25pct": 0.0625,
+          "threshold": 0.0634,
+          "precision": 0.1875,
+          "recall": 1.0,
+          "f1": 0.3158,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 64
+        },
+        "CADC0890": {
+          "n": 2,
+          "anomalies": 2,
+          "flagged": 2
+        },
+        "CADC0892": {
+          "n": 53,
+          "prevalence": 0.1321,
+          "pr_auc": 0.1321,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.1429,
+          "precision_at_top25pct": 0.0769,
+          "threshold": 0.0634,
+          "precision": 0.1321,
+          "recall": 1.0,
+          "f1": 0.2333,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 53
+        },
+        "CADC0894": {
+          "n": 33,
+          "prevalence": 0.1515,
+          "pr_auc": 0.1515,
+          "roc_auc": 0.5,
+          "recall_at_top25pct": 0.0,
+          "precision_at_top25pct": 0.0,
+          "threshold": 0.0634,
+          "precision": 0.1515,
+          "recall": 1.0,
+          "f1": 0.2632,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 33
+        }
+      }
+    },
+    "logreg": {
+      "overall": {
+        "n": 529,
+        "prevalence": 0.2136,
+        "pr_auc": 0.9402,
+        "roc_auc": 0.9779,
+        "recall_at_top25pct": 0.9027,
+        "precision_at_top25pct": 0.7727,
+        "brier": 0.0438,
+        "threshold": 0.3829,
+        "precision": 0.8879,
+        "recall": 0.8407,
+        "f1": 0.8636,
+        "mcc": 0.8284,
+        "balanced_accuracy": 0.9059,
+        "alerts": 107
+      },
+      "bootstrap": {
+        "pr_auc_ci95": [
+          0.8934,
+          0.9734
+        ],
+        "precision_ci95": [
+          0.8055,
+          0.9718
+        ],
+        "recall_ci95": [
+          0.7857,
+          0.8882
+        ],
+        "n_boot": 2000,
+        "unit": "episode"
+      },
+      "isolated_segments": {
+        "n": 56,
+        "prevalence": 0.3571,
+        "pr_auc": 0.9593,
+        "roc_auc": 0.9722,
+        "recall_at_top25pct": 0.7,
+        "precision_at_top25pct": 1.0,
+        "threshold": 0.3829,
+        "precision": 1.0,
+        "recall": 0.7,
+        "f1": 0.8235,
+        "mcc": 0.7746,
+        "balanced_accuracy": 0.85,
+        "alerts": 14
+      },
+      "per_channel": {
+        "CADC0872": {
+          "n": 132,
+          "prevalence": 0.2424,
+          "pr_auc": 0.9424,
+          "roc_auc": 0.9759,
+          "recall_at_top25pct": 0.875,
+          "precision_at_top25pct": 0.8485,
+          "threshold": 0.3829,
+          "precision": 0.8667,
+          "recall": 0.8125,
+          "f1": 0.8387,
+          "mcc": 0.79,
+          "balanced_accuracy": 0.8862,
+          "alerts": 30
+        },
+        "CADC0873": {
+          "n": 153,
+          "prevalence": 0.2026,
+          "pr_auc": 0.9539,
+          "roc_auc": 0.987,
+          "recall_at_top25pct": 0.9677,
+          "precision_at_top25pct": 0.7895,
+          "threshold": 0.3829,
+          "precision": 0.8929,
+          "recall": 0.8065,
+          "f1": 0.8475,
+          "mcc": 0.8127,
+          "balanced_accuracy": 0.8909,
+          "alerts": 28
+        },
+        "CADC0874": {
+          "n": 52,
+          "prevalence": 0.4423,
+          "pr_auc": 0.9982,
+          "roc_auc": 0.9985,
+          "recall_at_top25pct": 0.5652,
+          "precision_at_top25pct": 1.0,
+          "threshold": 0.3829,
+          "precision": 1.0,
+          "recall": 0.913,
+          "f1": 0.9545,
+          "mcc": 0.9242,
+          "balanced_accuracy": 0.9565,
+          "alerts": 21
+        },
+        "CADC0884": {
+          "n": 36,
+          "anomalies": 0,
+          "flagged": 0
+        },
+        "CADC0886": {
+          "n": 4,
+          "prevalence": 0.25,
+          "pr_auc": 1.0,
+          "roc_auc": 1.0,
+          "recall_at_top25pct": 1.0,
+          "precision_at_top25pct": 1.0,
+          "threshold": 0.3829,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "mcc": 0.0,
+          "balanced_accuracy": 0.5,
+          "alerts": 0
+        },
+        "CADC0888": {
+          "n": 64,
+          "prevalence": 0.1875,
+          "pr_auc": 0.9423,
+          "roc_auc": 0.9567,
+          "recall_at_top25pct": 0.9167,
+          "precision_at_top25pct": 0.6875,
+          "threshold": 0.3829,
+          "precision": 1.0,
+          "recall": 0.9167,
+          "f1": 0.9565,
+          "mcc": 0.9484,
+          "balanced_accuracy": 0.9583,
+          "alerts": 11
+        },
+        "CADC0890": {
+          "n": 2,
+          "anomalies": 2,
+          "flagged": 2
+        },
+        "CADC0892": {
+          "n": 53,
+          "prevalence": 0.1321,
+          "pr_auc": 0.851,
+          "roc_auc": 0.9658,
+          "recall_at_top25pct": 0.8571,
+          "precision_at_top25pct": 0.4615,
+          "threshold": 0.3829,
+          "precision": 0.6667,
+          "recall": 0.8571,
+          "f1": 0.75,
+          "mcc": 0.7141,
+          "balanced_accuracy": 0.896,
+          "alerts": 9
+        },
+        "CADC0894": {
+          "n": 33,
+          "prevalence": 0.1515,
+          "pr_auc": 0.7417,
+          "roc_auc": 0.95,
+          "recall_at_top25pct": 1.0,
+          "precision_at_top25pct": 0.625,
+          "threshold": 0.3829,
+          "precision": 0.6667,
+          "recall": 0.8,
+          "f1": 0.7273,
+          "mcc": 0.6773,
+          "balanced_accuracy": 0.8643,
+          "alerts": 6
+        }
+      }
+    },
+    "hgb": {
+      "overall": {
+        "n": 529,
+        "prevalence": 0.2136,
+        "pr_auc": 0.962,
+        "roc_auc": 0.9866,
+        "recall_at_top25pct": 0.9292,
+        "precision_at_top25pct": 0.7955,
+        "brier": 0.0353,
+        "threshold": 0.3885,
+        "precision": 0.9151,
+        "recall": 0.8584,
+        "f1": 0.8858,
+        "mcc": 0.8568,
+        "balanced_accuracy": 0.9184,
+        "alerts": 106
+      },
+      "bootstrap": {
+        "pr_auc_ci95": [
+          0.9408,
+          0.9849
+        ],
+        "precision_ci95": [
+          0.8317,
+          1.0
+        ],
+        "recall_ci95": [
+          0.8065,
+          0.9365
+        ],
+        "n_boot": 2000,
+        "unit": "episode"
+      },
+      "isolated_segments": {
+        "n": 56,
+        "prevalence": 0.3571,
+        "pr_auc": 0.9951,
+        "roc_auc": 0.9972,
+        "recall_at_top25pct": 0.7,
+        "precision_at_top25pct": 1.0,
+        "threshold": 0.3885,
+        "precision": 1.0,
+        "recall": 0.85,
+        "f1": 0.9189,
+        "mcc": 0.8858,
+        "balanced_accuracy": 0.925,
+        "alerts": 17
+      },
+      "per_channel": {
+        "CADC0872": {
+          "n": 132,
+          "prevalence": 0.2424,
+          "pr_auc": 0.9709,
+          "roc_auc": 0.9905,
+          "recall_at_top25pct": 0.9062,
+          "precision_at_top25pct": 0.8788,
+          "threshold": 0.3885,
+          "precision": 0.9032,
+          "recall": 0.875,
+          "f1": 0.8889,
+          "mcc": 0.8543,
+          "balanced_accuracy": 0.9225,
+          "alerts": 31
+        },
+        "CADC0873": {
+          "n": 153,
+          "prevalence": 0.2026,
+          "pr_auc": 0.975,
+          "roc_auc": 0.9923,
+          "recall_at_top25pct": 0.9355,
+          "precision_at_top25pct": 0.7632,
+          "threshold": 0.3885,
+          "precision": 0.9333,
+          "recall": 0.9032,
+          "f1": 0.918,
+          "mcc": 0.8978,
+          "balanced_accuracy": 0.9434,
+          "alerts": 30
+        },
+        "CADC0874": {
+          "n": 52,
+          "prevalence": 0.4423,
+          "pr_auc": 0.9946,
+          "roc_auc": 0.9955,
+          "recall_at_top25pct": 0.5652,
+          "precision_at_top25pct": 1.0,
+          "threshold": 0.3885,
+          "precision": 1.0,
+          "recall": 0.7391,
+          "f1": 0.85,
+          "mcc": 0.7826,
+          "balanced_accuracy": 0.8696,
+          "alerts": 17
+        },
+        "CADC0884": {
+          "n": 36,
+          "anomalies": 0,
+          "flagged": 0
+        },
+        "CADC0886": {
+          "n": 4,
+          "prevalence": 0.25,
+          "pr_auc": 1.0,
+          "roc_auc": 1.0,
+          "recall_at_top25pct": 1.0,
+          "precision_at_top25pct": 1.0,
+          "threshold": 0.3885,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "mcc": 1.0,
+          "balanced_accuracy": 1.0,
+          "alerts": 1
+        },
+        "CADC0888": {
+          "n": 64,
+          "prevalence": 0.1875,
+          "pr_auc": 0.9755,
+          "roc_auc": 0.992,
+          "recall_at_top25pct": 0.9167,
+          "precision_at_top25pct": 0.6875,
+          "threshold": 0.3885,
+          "precision": 1.0,
+          "recall": 0.9167,
+          "f1": 0.9565,
+          "mcc": 0.9484,
+          "balanced_accuracy": 0.9583,
+          "alerts": 11
+        },
+        "CADC0890": {
+          "n": 2,
+          "anomalies": 2,
+          "flagged": 2
+        },
+        "CADC0892": {
+          "n": 53,
+          "prevalence": 0.1321,
+          "pr_auc": 0.9048,
+          "roc_auc": 0.9565,
+          "recall_at_top25pct": 0.8571,
+          "precision_at_top25pct": 0.4615,
+          "threshold": 0.3885,
+          "precision": 1.0,
+          "recall": 0.8571,
+          "f1": 0.9231,
+          "mcc": 0.9159,
+          "balanced_accuracy": 0.9286,
+          "alerts": 6
+        },
+        "CADC0894": {
+          "n": 33,
+          "prevalence": 0.1515,
+          "pr_auc": 0.7544,
+          "roc_auc": 0.95,
+          "recall_at_top25pct": 0.8,
+          "precision_at_top25pct": 0.5,
+          "threshold": 0.3885,
+          "precision": 0.5,
+          "recall": 0.8,
+          "f1": 0.6154,
+          "mcc": 0.5498,
+          "balanced_accuracy": 0.8286,
+          "alerts": 8
+        }
+      }
+    },
+    "pca_recon": {
+      "overall": {
+        "n": 529,
+        "prevalence": 0.2136,
+        "pr_auc": 0.8817,
+        "roc_auc": 0.9407,
+        "recall_at_top25pct": 0.8319,
+        "precision_at_top25pct": 0.7121,
+        "threshold": 24.6794,
+        "precision": 0.7561,
+        "recall": 0.823,
+        "f1": 0.7881,
+        "mcc": 0.7285,
+        "balanced_accuracy": 0.8754,
+        "alerts": 123
+      },
+      "bootstrap": {
+        "pr_auc_ci95": [
+          0.8133,
+          0.95
+        ],
+        "precision_ci95": [
+          0.5763,
+          0.8957
+        ],
+        "recall_ci95": [
+          0.7447,
+          0.9516
+        ],
+        "n_boot": 2000,
+        "unit": "episode"
+      },
+      "isolated_segments": {
+        "n": 56,
+        "prevalence": 0.3571,
+        "pr_auc": 0.9559,
+        "roc_auc": 0.9667,
+        "recall_at_top25pct": 0.7,
+        "precision_at_top25pct": 1.0,
+        "threshold": 24.6794,
+        "precision": 1.0,
+        "recall": 0.8,
+        "f1": 0.8889,
+        "mcc": 0.8485,
+        "balanced_accuracy": 0.9,
+        "alerts": 16
+      },
+      "per_channel": {
+        "CADC0872": {
+          "n": 132,
+          "prevalence": 0.2424,
+          "pr_auc": 0.8926,
+          "roc_auc": 0.9384,
+          "recall_at_top25pct": 0.7812,
+          "precision_at_top25pct": 0.7576,
+          "threshold": 24.6794,
+          "precision": 0.8571,
+          "recall": 0.75,
+          "f1": 0.8,
+          "mcc": 0.7443,
+          "balanced_accuracy": 0.855,
+          "alerts": 28
+        },
+        "CADC0873": {
+          "n": 153,
+          "prevalence": 0.2026,
+          "pr_auc": 0.9019,
+          "roc_auc": 0.9455,
+          "recall_at_top25pct": 0.871,
+          "precision_at_top25pct": 0.7105,
+          "threshold": 24.6794,
+          "precision": 0.8276,
+          "recall": 0.7742,
+          "f1": 0.8,
+          "mcc": 0.7519,
+          "balanced_accuracy": 0.8666,
+          "alerts": 29
+        },
+        "CADC0874": {
+          "n": 52,
+          "prevalence": 0.4423,
+          "pr_auc": 0.9809,
+          "roc_auc": 0.9805,
+          "recall_at_top25pct": 0.5652,
+          "precision_at_top25pct": 1.0,
+          "threshold": 24.6794,
+          "precision": 0.9524,
+          "recall": 0.8696,
+          "f1": 0.9091,
+          "mcc": 0.8453,
+          "balanced_accuracy": 0.9175,
+          "alerts": 21
+        },
+        "CADC0884": {
+          "n": 36,
+          "anomalies": 0,
+          "flagged": 3
+        },
+        "CADC0886": {
+          "n": 4,
+          "prevalence": 0.25,
+          "pr_auc": 1.0,
+          "roc_auc": 1.0,
+          "recall_at_top25pct": 1.0,
+          "precision_at_top25pct": 1.0,
+          "threshold": 24.6794,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "mcc": 1.0,
+          "balanced_accuracy": 1.0,
+          "alerts": 1
+        },
+        "CADC0888": {
+          "n": 64,
+          "prevalence": 0.1875,
+          "pr_auc": 0.9479,
+          "roc_auc": 0.9679,
+          "recall_at_top25pct": 0.9167,
+          "precision_at_top25pct": 0.6875,
+          "threshold": 24.6794,
+          "precision": 0.7333,
+          "recall": 0.9167,
+          "f1": 0.8148,
+          "mcc": 0.7737,
+          "balanced_accuracy": 0.9199,
+          "alerts": 15
+        },
+        "CADC0890": {
+          "n": 2,
+          "anomalies": 2,
+          "flagged": 2
+        },
+        "CADC0892": {
+          "n": 53,
+          "prevalence": 0.1321,
+          "pr_auc": 0.8804,
+          "roc_auc": 0.8882,
+          "recall_at_top25pct": 0.8571,
+          "precision_at_top25pct": 0.4615,
+          "threshold": 24.6794,
+          "precision": 0.8571,
+          "recall": 0.8571,
+          "f1": 0.8571,
+          "mcc": 0.8354,
+          "balanced_accuracy": 0.9177,
+          "alerts": 7
+        },
+        "CADC0894": {
+          "n": 33,
+          "prevalence": 0.1515,
+          "pr_auc": 0.8714,
+          "roc_auc": 0.9357,
+          "recall_at_top25pct": 0.8,
+          "precision_at_top25pct": 0.5,
+          "threshold": 24.6794,
+          "precision": 0.2941,
+          "recall": 1.0,
+          "f1": 0.4545,
+          "mcc": 0.41,
+          "balanced_accuracy": 0.7857,
+          "alerts": 17
+        }
+      }
+    },
+    "iforest": {
+      "overall": {
+        "n": 529,
+        "prevalence": 0.2136,
+        "pr_auc": 0.712,
+        "roc_auc": 0.8723,
+        "recall_at_top25pct": 0.7522,
+        "precision_at_top25pct": 0.6439,
+        "threshold": 0.5088,
+        "precision": 0.5636,
+        "recall": 0.823,
+        "f1": 0.6691,
+        "mcc": 0.575,
+        "balanced_accuracy": 0.825,
+        "alerts": 165
+      },
+      "bootstrap": {
+        "pr_auc_ci95": [
+          0.5432,
+          0.8505
+        ],
+        "precision_ci95": [
+          0.4,
+          0.7031
+        ],
+        "recall_ci95": [
+          0.731,
+          0.9322
+        ],
+        "n_boot": 2000,
+        "unit": "episode"
+      },
+      "isolated_segments": {
+        "n": 56,
+        "prevalence": 0.3571,
+        "pr_auc": 0.9225,
+        "roc_auc": 0.9222,
+        "recall_at_top25pct": 0.7,
+        "precision_at_top25pct": 1.0,
+        "threshold": 0.5088,
+        "precision": 0.8421,
+        "recall": 0.8,
+        "f1": 0.8205,
+        "mcc": 0.7253,
+        "balanced_accuracy": 0.8583,
+        "alerts": 19
+      },
+      "per_channel": {
+        "CADC0872": {
+          "n": 132,
+          "prevalence": 0.2424,
+          "pr_auc": 0.7582,
+          "roc_auc": 0.8609,
+          "recall_at_top25pct": 0.7188,
+          "precision_at_top25pct": 0.697,
+          "threshold": 0.5088,
+          "precision": 0.8214,
+          "recall": 0.7188,
+          "f1": 0.7667,
+          "mcc": 0.701,
+          "balanced_accuracy": 0.8344,
+          "alerts": 28
+        },
+        "CADC0873": {
+          "n": 153,
+          "prevalence": 0.2026,
+          "pr_auc": 0.7547,
+          "roc_auc": 0.8916,
+          "recall_at_top25pct": 0.7742,
+          "precision_at_top25pct": 0.6316,
+          "threshold": 0.5088,
+          "precision": 0.6216,
+          "recall": 0.7419,
+          "f1": 0.6765,
+          "mcc": 0.5887,
+          "balanced_accuracy": 0.8136,
+          "alerts": 37
+        },
+        "CADC0874": {
+          "n": 52,
+          "prevalence": 0.4423,
+          "pr_auc": 0.965,
+          "roc_auc": 0.964,
+          "recall_at_top25pct": 0.5652,
+          "precision_at_top25pct": 1.0,
+          "threshold": 0.5088,
+          "precision": 0.7586,
+          "recall": 0.9565,
+          "f1": 0.8462,
+          "mcc": 0.7151,
+          "balanced_accuracy": 0.8576,
+          "alerts": 29
+        },
+        "CADC0884": {
+          "n": 36,
+          "anomalies": 0,
+          "flagged": 10
+        },
+        "CADC0886": {
+          "n": 4,
+          "prevalence": 0.25,
+          "pr_auc": 1.0,
+          "roc_auc": 1.0,
+          "recall_at_top25pct": 1.0,
+          "precision_at_top25pct": 1.0,
+          "threshold": 0.5088,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "mcc": 1.0,
+          "balanced_accuracy": 1.0,
+          "alerts": 1
+        },
+        "CADC0888": {
+          "n": 64,
+          "prevalence": 0.1875,
+          "pr_auc": 0.4356,
+          "roc_auc": 0.8061,
+          "recall_at_top25pct": 0.5,
+          "precision_at_top25pct": 0.375,
+          "threshold": 0.5088,
+          "precision": 0.5238,
+          "recall": 0.9167,
+          "f1": 0.6667,
+          "mcc": 0.6021,
+          "balanced_accuracy": 0.8622,
+          "alerts": 21
+        },
+        "CADC0890": {
+          "n": 2,
+          "anomalies": 2,
+          "flagged": 2
+        },
+        "CADC0892": {
+          "n": 53,
+          "prevalence": 0.1321,
+          "pr_auc": 0.7975,
+          "roc_auc": 0.8602,
+          "recall_at_top25pct": 0.8571,
+          "precision_at_top25pct": 0.4615,
+          "threshold": 0.5088,
+          "precision": 0.3333,
+          "recall": 0.8571,
+          "f1": 0.48,
+          "mcc": 0.4263,
+          "balanced_accuracy": 0.7981,
+          "alerts": 18
+        },
+        "CADC0894": {
+          "n": 33,
+          "prevalence": 0.1515,
+          "pr_auc": 0.7643,
+          "roc_auc": 0.9357,
+          "recall_at_top25pct": 0.8,
+          "precision_at_top25pct": 0.5,
+          "threshold": 0.5088,
+          "precision": 0.2632,
+          "recall": 1.0,
+          "f1": 0.4167,
+          "mcc": 0.3627,
+          "balanced_accuracy": 0.75,
+          "alerts": 19
+        }
+      }
     }
   }
 }

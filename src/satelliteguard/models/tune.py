@@ -18,7 +18,7 @@ import pandas as pd
 from satelliteguard import load_config
 from satelliteguard.evaluation.cv import run_cv, summarise_folds
 from satelliteguard.features import load_modeling_table, numeric_features, split_xy
-from satelliteguard.models.registry import ModelSpec, hgb, logreg
+from satelliteguard.models.registry import ModelSpec, hgb, iforest, logreg, pca_recon
 
 # family -> (factory builder, grid, simplicity sort: columns + ascending flags, simplest first)
 FAMILIES = {
@@ -32,7 +32,19 @@ FAMILIES = {
         {"max_leaf_nodes": [4, 8, 16, 31], "learning_rate": [0.03, 0.1]},
         (["max_leaf_nodes", "learning_rate"], [True, True]),  # fewer leaves, slower learning
     ),
+    # Novelty models are fit on train-normal segments only; labels are used only to score folds.
+    "iforest": (
+        iforest,
+        {"max_samples": [128, 256, 512], "max_features": [0.5, 1.0]},
+        (["max_samples", "max_features"], [True, True]),  # smaller subsamples = simpler
+    ),
+    "pca_recon": (
+        pca_recon,
+        {"n_components": [1, 2, 3, 4, 6, 8, 10]},
+        (["n_components"], [True]),
+    ),
 }
+NOVELTY = {"iforest", "pca_recon"}
 
 
 def one_se_choice(grid: pd.DataFrame, simplicity: tuple[list[str], list[bool]]) -> pd.Series:
@@ -57,7 +69,8 @@ def tune(family: str, cfg: dict) -> pd.DataFrame:
     keys = list(grid_spec)
     for values in itertools.product(*grid_spec.values()):
         params = dict(zip(keys, values, strict=True))
-        spec = ModelSpec(f"{family}_{params}", builder(**params), "", "supervised")
+        spec = ModelSpec(f"{family}_{params}", builder(**params), "", "supervised",
+                         fit_on_normal_only=family in NOVELTY)
         res = run_cv(spec, X, y, groups, numeric, cfg)
         rows.append({**params, **summarise_folds(res["folds"])})
         print(rows[-1])

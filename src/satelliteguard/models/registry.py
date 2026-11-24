@@ -11,8 +11,9 @@ from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
-from sklearn.base import BaseEstimator, ClassifierMixin
-from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.base import BaseEstimator, ClassifierMixin, OutlierMixin
+from sklearn.decomposition import PCA
+from sklearn.ensemble import HistGradientBoostingClassifier, IsolationForest
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
@@ -86,6 +87,49 @@ def hgb(max_leaf_nodes: int = 15, learning_rate: float = 0.05, max_iter: int = 3
     return factory
 
 
+class PCAReconstruction(OutlierMixin, BaseEstimator):
+    """Novelty score = squared reconstruction error after projecting onto the top principal
+    components of NORMAL training segments. score_samples follows the sklearn convention
+    (higher = more normal), so it returns the negative error."""
+
+    def __init__(self, n_components: int = 4):
+        self.n_components = n_components
+
+    def fit(self, X, y=None):
+        self.pca_ = PCA(n_components=self.n_components).fit(X)
+        return self
+
+    def reconstruction_error(self, X):
+        X = np.asarray(X, dtype=float)
+        rec = self.pca_.inverse_transform(self.pca_.transform(X))
+        return ((X - rec) ** 2).sum(axis=1)
+
+    def score_samples(self, X):
+        return -self.reconstruction_error(X)
+
+
+def iforest(n_estimators: int = 300, max_samples="auto", max_features: float = 1.0):
+    """Isolation Forest on quantile-scaled numeric features (no channel). `contamination` only
+    sets sklearn's internal predict() cut-off; scores come from score_samples and our own
+    threshold policy, so contamination does not affect any reported metric."""
+    def factory(numeric, seed):
+        return Pipeline([
+            ("pre", make_preprocessor(numeric, scaling="quantile", use_channel=False)),
+            ("clf", IsolationForest(n_estimators=n_estimators, max_samples=max_samples,
+                                    max_features=max_features, random_state=seed)),
+        ])
+    return factory
+
+
+def pca_recon(n_components: int = 4):
+    def factory(numeric, seed):
+        return Pipeline([
+            ("pre", make_preprocessor(numeric, scaling="quantile", use_channel=False)),
+            ("clf", PCAReconstruction(n_components=n_components)),
+        ])
+    return factory
+
+
 MODELS: dict[str, ModelSpec] = {
     "prevalence": ModelSpec(
         "prevalence", lambda n, s: PrevalenceBaseline(),
@@ -106,6 +150,18 @@ MODELS: dict[str, ModelSpec] = {
         "features + one-hot channel", "supervised",
         params={"max_leaf_nodes": 4, "learning_rate": 0.03, "max_iter": 300,
                 "min_samples_leaf": 20, "l2_regularization": 1.0}),
+    # Novelty track: fit on train-normal segments only. Labels are used only to choose the
+    # hyperparameter (one-SE rule over reports/tuning/*_grid.csv) and the review threshold.
+    "pca_recon": ModelSpec(
+        "pca_recon", pca_recon(n_components=3),
+        "PCA reconstruction error (3 components) on quantile-scaled features, fit on "
+        "train-normal only", "unsupervised", is_probability=False, fit_on_normal_only=True,
+        params={"n_components": 3}),
+    "iforest": ModelSpec(
+        "iforest", iforest(max_samples=128, max_features=1.0),
+        "Isolation Forest (300 trees, 128 samples/tree) on quantile-scaled features, fit on "
+        "train-normal only", "unsupervised", is_probability=False, fit_on_normal_only=True,
+        params={"n_estimators": 300, "max_samples": 128, "max_features": 1.0}),
     "logreg_balanced": ModelSpec(
         "logreg_balanced", logreg(C=1.0, scaling="quantile", class_weight="balanced"),
         "As logreg but class_weight='balanced' (calibration comparison)", "supervised",

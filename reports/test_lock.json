@@ -1,0 +1,15 @@
+{
+  "evaluated_utc": "2026-11-24T15:28:29+00:00",
+  "git_commit": "ad0e08c63c6257be1979af3c6b497b24c954a2c6+uncommitted",
+  "candidates": [
+    "prevalence",
+    "channel_only",
+    "logreg",
+    "hgb",
+    "pca_recon",
+    "iforest"
+  ],
+  "primary": "hgb",
+  "n_test_segments": 529,
+  "forced": false
+}

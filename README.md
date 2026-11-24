@@ -9,7 +9,8 @@ the ESA OPS-SAT telemetry dataset (OPSSAT-AD). It ranks telemetry segments for o
 > confirm spacecraft hardware faults. Labels are segment-level benchmark annotations, and channel
 > IDs (e.g. `CADC0872`) are opaque — no subsystem meaning is claimed.
 
-**Status:** 🚧 in progress (deadline 30 Nov 2026) — see [docs/decision_log.md](docs/decision_log.md).
+**Status:** models and frozen-test evaluation complete; dashboard and report in progress
+(deadline 30 Nov 2026) — see [docs/decision_log.md](docs/decision_log.md).
 
 ## Quick start
 
@@ -24,9 +25,13 @@ python -m satelliteguard.data.validate   # data-contract audit (red gate)
 python -m satelliteguard.data.episodes   # segment index + contiguous episodes
 python -m satelliteguard.models.tune logreg   # bounded hyperparameter grids
 python -m satelliteguard.models.tune hgb
+python -m satelliteguard.models.tune pca_recon
+python -m satelliteguard.models.tune iforest
 python -m satelliteguard.models.train    # grouped CV, thresholds, final models
 python -m satelliteguard.evaluation.compare hgb logreg
+python -m satelliteguard.evaluation.compare hgb pca_recon
 python -m satelliteguard.models.explain  # held-out SHAP
+python -m satelliteguard.evaluation.evaluate_test   # frozen test, refuses to run twice
 python -m satelliteguard.evaluation.plots
 pytest -q
 ```
@@ -56,21 +61,29 @@ episode-grouped CV for all model selection. Details: [notebooks/01_eda.ipynb](no
 
 ![Segment timeline](reports/figures/02_segment_timeline.png)
 
-## Results so far (episode-grouped CV, train split)
+## Results
 
-| Model | PR-AUC (mean ± sd, 15 folds) | Precision / recall at review threshold |
-|---|---|---|
-| Prevalence (reference) | 0.201 ± 0.002 | – |
-| Channel only (reference) | 0.250 ± 0.050 | – |
-| Logistic regression (interpretable baseline) | 0.878 ± 0.078 | 0.83 / 0.82 |
-| **Gradient boosting (primary)** | **0.919 ± 0.060** | 0.82 / 0.83 |
+| Model | Track | Grouped-CV PR-AUC (generalisation) | Frozen-test PR-AUC [95% CI] | Test precision / recall |
+|---|---|---|---|---|
+| Prevalence | reference | 0.201 | 0.214 | – |
+| Channel only | reference | 0.250 ± 0.050 | 0.317 [0.17, 0.52] | 0.23 / 1.00 |
+| Logistic regression | supervised | 0.878 ± 0.078 | 0.940 [0.89, 0.97] | 0.89 / 0.84 |
+| **Gradient boosting (primary)** | supervised | **0.919 ± 0.060** | **0.962 [0.94, 0.98]** | **0.92 / 0.86** |
+| PCA reconstruction | novelty (no labels in fit) | 0.850 ± 0.065 | 0.882 [0.81, 0.95] | 0.76 / 0.82 |
+| Isolation Forest | novelty (no labels in fit) | 0.611 ± 0.160 | 0.712 [0.54, 0.85] | 0.56 / 0.82 |
 
-Boosting wins 11/15 paired folds, but the Nadeau–Bengio corrected t-test gives p = 0.30, so the
-difference is not statistically significant. SHAP shows the model relies on peak counts and
-second-difference variance (spikes and dropouts), not channel identity.
+- **Test was scored once**, after pre-registering the candidates ([decision log](docs/decision_log.md),
+  [lock file](reports/test_lock.json)). CIs come from a bootstrap over contiguous episodes.
+- Test scores exceed grouped CV because test segments neighbour training segments; boosting's test score
+  matches the leaky random-CV estimate from Day 1. **Grouped CV is the honest estimate for unseen episodes.**
+- Boosting vs logistic: not significant (Nadeau–Bengio corrected p = 0.30). Boosting vs PCA: significant (p = 0.03).
+- SHAP: the model relies on peak counts and second-difference variance (spikes, dropouts), not channel identity.
+- PCA reconstruction catches 17 of boosting's 56 CV misses and is shown as a second-opinion score.
 
-The frozen test split has not been scored yet; it is used once, after model selection.
-Details: [02_baselines](notebooks/02_baselines.ipynb), [03_gradient_boosting](notebooks/03_gradient_boosting.ipynb).
+![CV vs test](reports/figures/23_cv_vs_test.png)
+
+Notebooks: [01 EDA](notebooks/01_eda.ipynb) · [02 baselines](notebooks/02_baselines.ipynb) ·
+[03 gradient boosting](notebooks/03_gradient_boosting.ipynb) · [04 novelty & frozen test](notebooks/04_novelty_and_test.ipynb)
 
 ## Approach
 

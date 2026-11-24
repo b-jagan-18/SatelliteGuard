@@ -115,7 +115,57 @@ One entry per day: what was done, evidence, risks, next decision.
   logreg = interpretable baseline. Report states the CV difference is not significant.
 - Both go to the frozen test once, after Day 4.
 
-**Next (D4)**
-- Isolation Forest + PCA reconstruction fit on train-normal only, same grouped CV; contamination
-  sensitivity; do novelty models help on the supervised model's weak spots (CADC0892/0894)?
-- Frozen-test evaluation script (run once) for the final candidate set.
+## D4 - Tue 24 Nov 2026 - Novelty track and frozen test
+
+**Done (before test evaluation)**
+- Isolation Forest and PCA reconstruction (custom `PCAReconstruction`) in the registry, fit on
+  train-normal segments only, quantile-scaled numeric features, no channel input.
+- Grids: iforest max_samples {128,256,512} x max_features {0.5,1}; pca n_components {1..10}.
+  Labels used only to score folds (hyperparameter + threshold choice), never to fit.
+
+**Evidence (episode-grouped CV, train split)**
+- pca_recon (3 comps, one-SE): PR-AUC 0.850 ± 0.065; U-shaped in n_components (1: 0.71,
+  3: 0.85, 10: 0.72): too few comps cannot model normal behaviour, too many reconstruct anomalies.
+- iforest (128 samples, one-SE): PR-AUC 0.611 ± 0.160.
+- Corrected paired t-tests: hgb > pca_recon (14/15 folds, p = 0.034); pca_recon vs logreg tie
+  (p = 0.49).
+- Complementarity: pca_recon flags 17 of hgb's 56 OOF misses; on CADC0892 recall 0.63 vs 0.44
+  but 28 FP vs 5. iforest flags all 131 normal CADC0892 segments and 79 on CADC0884 (zero
+  anomalies): channel-unaware novelty models confuse "unusual channel scale" with anomaly.
+- `contamination` is not tuned: it only sets sklearn's internal predict() cut-off, which is never
+  used; scores + our threshold policy determine every reported metric.
+
+**PRE-REGISTRATION (written before the frozen test is scored)**
+- Candidates: prevalence, channel_only, logreg, hgb, pca_recon, iforest (final fits on full
+  train split; thresholds fixed from train OOF predictions).
+- Primary model: **hgb**. Secondary "second-opinion" score for the dashboard: **pca_recon**.
+- Test reported once, with 95% episode-cluster bootstrap intervals, per channel, and on the
+  subset of test segments that do not touch a training segment.
+- No model, hyperparameter or threshold will be changed after seeing test results; any later
+  change would be reported as post-hoc.
+
+**Frozen test results (run once: 2026-11-24 15:28 UTC, lock in `reports/test_lock.json`)**
+
+| model | test PR-AUC [95% episode bootstrap] | precision | recall | MCC |
+|---|---|---|---|---|
+| prevalence | 0.214 | 0.21 | 1.00 | 0.00 |
+| channel_only | 0.317 [0.171, 0.524] | 0.23 | 1.00 | 0.14 |
+| logreg | 0.940 [0.893, 0.973] | 0.89 | 0.84 | 0.83 |
+| **hgb** | **0.962 [0.941, 0.985]** | **0.92** | **0.86** | **0.86** |
+| pca_recon | 0.882 [0.813, 0.950] | 0.76 | 0.82 | 0.73 |
+| iforest | 0.712 [0.543, 0.851] | 0.56 | 0.82 | 0.57 |
+
+- Ranking identical to CV. Every model scores higher on test than in grouped CV; hgb test (0.962)
+  ~= Day-1 random-CV estimate (0.967) -> the interleaved test split is optimistic, as predicted.
+  Grouped CV (0.919) is reported as the generalisation estimate, test for benchmark comparability.
+- 56 isolated test segments (touch no train segment; 20 anomalies): hgb PR-AUC 0.995. Small,
+  unrepresentative subset (36% anomalous) -> no collapse away from neighbours, nothing stronger.
+- CV weak spot replicates: CADC0894 test PR-AUC 0.75, precision 0.50.
+
+**Decisions**
+- Final: hgb primary, pca_recon second-opinion score in dashboard, logreg interpretable baseline.
+- Future work (not in scope): channel-normalised / per-channel novelty models; temporal split.
+
+**Next (D5)**
+- Streamlit dashboard on saved artifacts: overview, data health, segment explorer, model
+  comparison, why-flagged (SHAP incl. test segments), review-queue CSV export.
