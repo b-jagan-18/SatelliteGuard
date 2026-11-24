@@ -9,7 +9,7 @@ the ESA OPS-SAT telemetry dataset (OPSSAT-AD). It ranks telemetry segments for o
 > confirm spacecraft hardware faults. Labels are segment-level benchmark annotations, and channel
 > IDs (e.g. `CADC0872`) are opaque — no subsystem meaning is claimed.
 
-**Status:** models and frozen-test evaluation complete; dashboard and report in progress
+**Status:** models, frozen-test evaluation and dashboard complete; technical report in progress
 (deadline 30 Nov 2026) — see [docs/decision_log.md](docs/decision_log.md).
 
 ## Quick start
@@ -33,8 +33,29 @@ python -m satelliteguard.evaluation.compare hgb pca_recon
 python -m satelliteguard.models.explain  # held-out SHAP
 python -m satelliteguard.evaluation.evaluate_test   # frozen test, refuses to run twice
 python -m satelliteguard.evaluation.plots
+python -m satelliteguard.dashboard.extract  # small committed extracts for the dashboard
 pytest -q
+
+streamlit run app/streamlit_app.py          # dashboard (needs only committed files)
 ```
+
+## Dashboard
+
+`streamlit run app/streamlit_app.py` opens a five-page decision-support dashboard. It reads only
+committed files (`data/processed/dashboard/`, `reports/*.json`), never fits a model and does not
+need the raw download, so it also runs on Streamlit Community Cloud.
+
+| Page | What it shows |
+|---|---|
+| Overview | Headline test metrics with CIs, all-model table, why test > CV |
+| Review queue | Segments ranked by boosting probability, PCA novelty percentile as a second opinion, agreement column, CSV export; threshold defaults to the pre-registered value |
+| Segment explorer | Raw trace with neighbouring segments of the same episode, per-segment SHAP ("why scored this way"), feature values vs normal segments on the same channel |
+| Model comparison | Interactive PR curves (test or out-of-fold), threshold trade-off with confusion matrix, per-channel test results, corrected significance tests, global SHAP |
+| Data health | Data-contract checks, class balance by channel, neighbour-leakage summary, provenance |
+
+Train-segment scores and SHAP are **out-of-fold** (from models that never saw the segment's
+episode); test-segment scores and SHAP come from the final models. Every page states that a flag
+marks a segment for review and is not a fault diagnosis.
 
 ## Data
 
@@ -99,9 +120,9 @@ Notebooks: [01 EDA](notebooks/01_eda.ipynb) · [02 baselines](notebooks/02_basel
 ```
 configs/            experiment config (paths, seed, CV)
 data/raw/           Zenodo downloads (git-ignored, re-downloadable)
-data/processed/     audit, feature tables, dashboard extracts
-src/satelliteguard/ data, models, evaluation packages
-app/                Streamlit dashboard
+data/processed/     audit, OOF/test predictions, SHAP, dashboard extracts
+src/satelliteguard/ data, models, evaluation, dashboard (extract + queries) packages
+app/                Streamlit dashboard (streamlit_app.py + views/)
 notebooks/          EDA and analysis
 reports/            figures, metrics.json, technical report
 tests/              data-contract and pipeline tests

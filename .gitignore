@@ -18,6 +18,9 @@ data/raw/*
 # Large intermediate model files (small final artifacts are committed explicitly)
 models/tmp/
 
+# Local tool config (machine-specific paths)
+.claude/
+
 # OS / editor
 .DS_Store
 Thumbs.db

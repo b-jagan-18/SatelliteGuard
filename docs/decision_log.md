@@ -169,3 +169,33 @@ One entry per day: what was done, evidence, risks, next decision.
 **Next (D5)**
 - Streamlit dashboard on saved artifacts: overview, data health, segment explorer, model
   comparison, why-flagged (SHAP incl. test segments), review-queue CSV export.
+
+## D5 - Tue 24 Nov 2026 - Decision-support dashboard
+
+**Done**
+- `satelliteguard.dashboard.extract` -> `data/processed/dashboard/` (2.7 MB, committed):
+  `segments.csv` (all 2,123 segments: metadata, hgb/logreg/pca scores + flags, PCA novelty
+  percentile), `shap.csv` (held-out SHAP for train, final-model SHAP for test), `features.csv`,
+  `traces.csv.gz` (raw samples, seconds since segment start).
+- `satelliteguard.dashboard.queries`: review queue, SHAP top-k (additive, "other features"
+  bucket), PR curve, confusion at threshold, episode context. Unit-tested.
+- `app/streamlit_app.py` + 5 pages (overview, review queue, segment explorer, model
+  comparison, data health). Tests: extract contract (every segment once, test flags identical to
+  `test_predictions.csv`, train scores identical to OOF, SHAP additive, test SHAP logit
+  reproduces final-model probability) and a headless AppTest run of every page (39 tests).
+
+**Decisions**
+- The app never fits or unpickles a model: it reads extracts and `reports/*.json`. No sklearn
+  version coupling at serve time; runs without the raw download (Streamlit Cloud-ready).
+- Train scores shown are out-of-fold (mean of 3 repeats); train SHAP comes from the first-repeat
+  fold model, so its implied probability can differ slightly - stated on the page.
+- Novelty score shown as a percentile among train-normal OOF scores (interpretable "more
+  unusual than X% of normal segments") rather than raw reconstruction error.
+- Threshold sliders default to the pre-registered policy; any other value shows an
+  "exploratory" warning. Reported results never use slider values.
+- Labels can be hidden in the queue/explorer to view it as an operator would.
+- Wording: "anomalous segment", "benchmark label", "for review"; a scope note on every page.
+
+**Next (D6)**
+- Technical report (PDF) incl. dashboard screenshots, model card, clean-environment
+  reproducibility dry run.
